@@ -104,12 +104,17 @@ Its another middware after authentication filter
 Verify the model, action can excute or not
 
 ```javascript
-  authzManager: function (obj, act) {
+  authzHasPermission: function (obj, act) {
     return async (req, res, next) => {
       try {
         const { user } = req;
         const userRaw = await userController.getUserData(user)
-        if (userRaw.role !== roles.manager && userRaw.role !== roles.admin) {
+        let isPermission = false
+        console.log(userRaw, obj, act);
+        forEach(userRaw.permissions, item => {
+          if(obj == item.object && act == item.action) isPermission = true;
+        })
+        if (!isPermission) {
           throw new APIError({
             message: 'Insufficient permissions',
             errors: ['insufficient_permissions'],
@@ -122,14 +127,14 @@ Verify the model, action can excute or not
         next(error);
       }
     };
-  },
+  }
 ```
 
 Use the middware authorization
 ```javascript
 router.route('/items')
-  .post(authorize(), authz.authzManager('items', 'write'), validate(items), controller.addItems)
-  .get(authorize(), authz.authzManager('items', 'read'), controller.getItems);
+  .post(authorize(), authz.authzHasPermission('items', 'create'), validate(items), controller.addItems)
+  .get(authorize(), authz.authzHasPermission('items', 'read'), controller.getItems);
 ```
 
 

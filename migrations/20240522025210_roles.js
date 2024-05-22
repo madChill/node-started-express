@@ -10,12 +10,13 @@ exports.up = function(knex) {
           table.string('slug')
           table.string('description')
           table.timestamps(true, true)
-        }).createTable('user_roles', function(table) {
+        })
+        .createTable('user_roles', function(table) {
             table.increments('id').primary()
             table
               .integer('role_id')
               .references('id')
-              .inTable('roles')
+              .inTable('roles') 
             table
               .integer('user_id')
               .references('id')
@@ -32,12 +33,7 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return Promise.all([
-        knex.schema
-            .dropTableIfExists('user_roles')
-            .dropTableIfExists('roles')
-                .catch(err => {
-                    console.error(err)
-                    throw err
-                })
+        knex.schema.dropTableIfExists('user_roles'),
+        knex.schema.dropTableIfExists('roles')
     ])
 };

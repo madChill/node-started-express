@@ -9,7 +9,7 @@
     "knex:make": "knex migrate:make",
     "knex:migrate": "npx knex migrate:latest",
     "knex:rollback": "npx knex migrate:rollback",
-    "seed": "npx knex seed:run",
+    "knex:seed": "npx knex seed:run",
     "lint": "eslint ./",
     "lint:fix": "yarn lint --fix",
     "swagger": "node api_docs/generate_swagger_json.js",
