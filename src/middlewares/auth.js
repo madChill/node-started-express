@@ -134,24 +134,6 @@ const handleJWTBlockedUser = (req, res, next) => async (err, user, info) => {
 };
 
 
-const handleClientAuth = (req, res, next) => async (err, clientApp, info) => {
-  const error = err || info;
-
-  const apiError = new APIError({
-    message: error ? error.message : 'Unauthorized',
-    status: httpStatus.UNAUTHORIZED,
-    stack: error ? error.stack : undefined,
-  });
-
-  if (err || !clientApp) {
-    return next(apiError);
-  }
-
-  req.clientApp = clientApp;
-
-  return next();
-};
-
 
 exports.authorize = () => (req, res, next) => passport.authenticate(
   'jwt', { session: false },

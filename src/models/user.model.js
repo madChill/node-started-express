@@ -47,7 +47,7 @@ static get relationMappings() {
           to: 'roles.id',
         },
       },   
-      roles: {
+      items: {
         relation: Model.ManyToManyRelation,
         modelClass: Items,
         join: {
@@ -56,7 +56,7 @@ static get relationMappings() {
             from: 'user_items.user_id',
             to: 'user_items.item_id',
           },
-          to: 'roles.id',
+          to: 'items.id',
         },
       },    
     };
