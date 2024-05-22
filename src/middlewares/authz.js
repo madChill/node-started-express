@@ -9,8 +9,8 @@ module.exports = {
     return async (req, res, next) => {
       try {
         const { user } = req;
-        const userRaw = userController.getUserData(user)
-        if (!userRaw.role != roles.manager) {
+        const userRaw = await userController.getUserData(user)
+        if (userRaw.role !== roles.manager && userRaw.role !== roles.admin) {
           throw new APIError({
             message: 'Insufficient permissions',
             errors: ['insufficient_permissions'],
@@ -28,7 +28,7 @@ module.exports = {
     return async (req, res, next) => {
       try {
         const { user } = req;
-        const userRaw = userController.getUserData(user)
+        const userRaw = await userController.getUserData(user)
         if (!userRaw.role != roles.admin) {
           throw new APIError({
             message: 'Insufficient permissions',
