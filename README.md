@@ -38,9 +38,105 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Project Structure
+The most obvious difference in a Javascript + Node project is the folder structure.
+In a Expressjs project, it's best to have separate _source_  and _distributable_ files.
+
+The full folder structure of this app is explained below:
+
+> **Note!** Make sure you have already built the app using `pnpm run build`
+
+| Name | Description |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| **node_modules**         | Contains all your npm dependencies                                                            |
+| **src**                  | Contains your source code that will be compiled to the dist dir                               |
+| **src/config**           | Passport authentication strategies and constants variables, logging.. etc   |
+|                          | Add other complex config code here                                                            |
+| **src/controllers**      | Controllers define functions that respond to various http requests                            |
+| **src/middlewares**      | Login middleware, authorization checking                                                      |
+| **src/models**           | Models define Objection, Knex schemas that will be used in storing,retrieving data from postgres  |
+| **src/routers**          | Routing folder for all express application                                                    |
+| **src/utils**            | The basic common function used to be reused multiple times in app                             |
+| **src/validations**      | The validate files for http request, its written in joi library                               |
+| **migrations**           | Contains migrations .js files and history from Knex tool for postgres sql.                    |
+| **seeds**                | Contains seeds .js files prepare testing data after setup database intergration.              |
+| .env                     | API keys, tokens, passwords, database URI. Clone this, but don't check it in to public repos. |
+| .env.example             | API keys, tokens, passwords, database URI. Clone this, but don't check it in to public repos. |
+| .Dockerfile              | Used to configure docker image build scenario                                                 |
+| package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)                          |
+| .babelrc                 | Config settings for compiling server code written in TypeScript                               |
+| .eslintrc                | Config settings for ESLint code style checking                                                |
+| .eslintignore            | Config settings for paths to exclude from linting                                             |
+
+
+## Security 
+
+#### Authentications
+We use the expressjs middware, passport, passport-jwt strategy  library to implement the authentication scenario.
+For more detail: After login with email, password we'll seen the users bearer token for include http request header later..
+Then for every http request need auth who created require we verify the bearer token with JWT custom scenario in JwtStrategy
+
+Middware to fillter users logined or not with jwt scenario
+
+```javascript
+exports.authorize = () => (req, res, next) => passport.authenticate(
+  'jwt', { session: false },
+  handleJWT(req, res, next),
+)(req, res, next);
+```
+
+JWT custom scenario in JwtStrategy:
+```javascript
+const jwt = async (payload, done) => {
+  try {
+    const user = await User.query().findById(payload.sub)
+    if (user) return done(null, user);
+    return done(null, false);
+  } catch (error) {
+    return done(error, false);
+  }
+};
+```
+#### Authorization
+After authentication we should get the user's roles, permission to verify that they can do action with the route.
+Its another middware after authentication filter
+
+Verify the model, action can excute or not
+
+```javascript
+  authzManager: function (obj, act) {
+    return async (req, res, next) => {
+      try {
+        const { user } = req;
+        const userRaw = await userController.getUserData(user)
+        if (userRaw.role !== roles.manager && userRaw.role !== roles.admin) {
+          throw new APIError({
+            message: 'Insufficient permissions',
+            errors: ['insufficient_permissions'],
+            status: httpStatus.FORBIDDEN,
+            isPublic: true,
+          });
+        }
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
+  },
+```
+
+Use the middware authorization
+```javascript
+router.route('/items')
+  .post(authorize(), authz.authzManager('items', 'write'), validate(items), controller.addItems)
+  .get(authorize(), authz.authzManager('items', 'read'), controller.getItems);
+```
+
+
+
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Expressjs is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://github.com/expressjs/express).
 
 ## Stay in touch
 
