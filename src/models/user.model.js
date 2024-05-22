@@ -32,6 +32,7 @@ class User extends Model {
 
 static get relationMappings() {
     const Role = require('./role.model');
+    const Items = require('./items.model');
 
     return {
       roles: {
@@ -45,7 +46,19 @@ static get relationMappings() {
           },
           to: 'roles.id',
         },
-      },      
+      },   
+      roles: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Items,
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'user_items.user_id',
+            to: 'user_items.item_id',
+          },
+          to: 'roles.id',
+        },
+      },    
     };
   }
 
