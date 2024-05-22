@@ -23,8 +23,8 @@ JWT_PUBLIC_KEY = ""
 
 ### run migrate database with knex
  ```bash
- $ pnpm run migrate
- $ pnpm run seed
+ $ pnpm run knex:migrate
+ $ pnpm run knex:seed
 ```
 
 ### For development and production 
