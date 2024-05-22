@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const httpStatus = require('http-status');
+const { get, map, forEach } = require('lodash');
 
 const APIError = require('../../utils/APIError');
 const User = require('../../models/user.model');
@@ -12,7 +13,14 @@ const getUserData = async (user) => {
   const userData = User.transform(user);
   const attributions = await User.query()
     .where('id', '=', user.id)
+    .withGraphFetched('[roles.[permissions]]')  
     .first();
+  let permissions = []
+  forEach(attributions.roles, item => {
+    permissions = permissions.concat(get(item, 'permissions', []))
+  })
+
+  userData.permissions = permissions;
   userData.attributions = (attributions && attributions.attributions) ? attributions.attributions : [];
   return userData;
 };
