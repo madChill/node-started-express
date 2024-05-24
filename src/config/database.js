@@ -1,11 +1,9 @@
-const Knex = require('knex');
 const { pgConnectionUri } = require('./const');
+const Sequelize = require("sequelize");
 
-exports.knex = Knex({
-  client: 'postgresql',
-  connection: pgConnectionUri,
-  pool: {
-    min: 2,
-    max: 30,
-  },
-});
+class DatabaseService {
+  constructor() {
+    this.sequelize = new Sequelize(pgConnectionUri);
+  }
+}
+module.exports = new DatabaseService();

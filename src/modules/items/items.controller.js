@@ -13,12 +13,7 @@ class ItemsController {
   };
   getItems = async (req, res, next) => {
     try {
-      const page = req.query.page || 0; // Default to page 0 if no page query parameter is provided
-      const pageSize = 10; // Set the page size
-  
-      // Fetch the items for the requested page
-      const items = await Items.query().page(page, pageSize);
-  
+      const items = await ItemsService.getItems(req.query);
       return res.json(items);
     } catch (error) {
       return next(error);

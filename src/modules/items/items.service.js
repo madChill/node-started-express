@@ -1,27 +1,25 @@
 
 const APIError = require('../../utils/APIError');
-const Items = require('./items.model');
+const ItemsRepository = require('./items.repository');
 
 class ItemsService {
   constructor() { }
   addItems = async (newItem) => {
     try {
-      return await Items.query().insert(newItem);
+      return await ItemsRepository.create(newItem);
     } catch (error) {
       throw error
     }
   };
-  getItems = async (req, res, next) => {
+  getItems = async ({ page = 1, limit = 10, sort = null, search = null } = {}) => {
+    const offset = page && limit ? (page - 1) * limit : 0;
+    const order = sort ? [[sort.field, sort.order]] : [['created_at', 'DESC']];
+    const where = search ? { name: { [Op.like]: `%${search}%` } } : undefined;
     try {
-      const page = req.query.page || 0; // Default to page 0 if no page query parameter is provided
-      const pageSize = 10; // Set the page size
-
-      // Fetch the items for the requested page
-      const items = await Items.query().page(page, pageSize);
-
-      return res.json(items);
+      const { count, rows: items } = await ItemsRepository.findAndCountAll({ offset, limit, order, where });
+      return { total: count, items };
     } catch (error) {
-      return next(error);
+      throw error;
     }
   };
 }

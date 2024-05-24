@@ -5,26 +5,37 @@ const { v4: uuidv4 } = require('uuid');
 const moment = require('moment-timezone');
 
 const APIError = require('../../utils/APIError');
-const User = require('./user.model');
+const Roles = require('../roles/roles.model');
+const Permission = require('../permissions/permissions.model');
+const UserRepository = require('./user.repository');
+const { log } = require('winston');
 
 class UserService {
   getUserByEmail = async (email) => {
-    const user = await User.query().where('email', '=', email).first();
+    const user = await UserRepository.findByEmail(email);
     return user;
   }
   getUserData = async (user) => {
-    const userData = User.transform(user);
-    const attributions = await User.query()
-      .where('id', '=', user.id)
-      .withGraphFetched('[roles.[permissions]]')
-      .first();
+    const userData = this.transform(user);
+    const attributions = await UserRepository.findById(user.id, {
+      include: [
+        {
+          model: Roles,
+          as: 'roles',
+          include: [
+            {
+              model: Permission,
+              as: 'permissions'
+            }
+          ]
+        }
+      ]
+    })
     let permissions = []
-    forEach(attributions.roles, item => {
+    forEach(attributions.get({ plain: true }).roles, item => {
       permissions = permissions.concat(get(item, 'permissions', []))
     })
-
     userData.permissions = permissions;
-    userData.attributions = (attributions && attributions.attributions) ? attributions.attributions : [];
     return userData;
   };
   loggedIn = async (req, res, next) => {
@@ -35,11 +46,9 @@ class UserService {
       next(e);
     }
   };
-  updatePassword = async (req, res, next) => {
+  updatePassword = async ({ password, currentPassword }, { user }) => {
     try {
-      const { password, currentPassword } = req.body;
-
-      if (!await bcrypt.compare(currentPassword, req.user.password)) {
+      if (!await bcrypt.compare(currentPassword, user.password)) {
         throw new APIError({
           message: 'Password is incorrect',
           errors: ['invalid_credentials'],
@@ -48,16 +57,10 @@ class UserService {
         });
       }
 
-      await User.query()
-        .patch({
-          password: await bcrypt.hash(password, 10),
-        })
-        .where('id', '=', req.user.id)
-        .first();
+      return await UserRepository.update(user.id, { password: await bcrypt.hash(password, 10) });
 
-      return res.json({ success: true });
     } catch (error) {
-      return next(error);
+      throw error;
     }
   };
   transform(user) {
@@ -98,8 +101,7 @@ class UserService {
     }
     userData.password = await bcrypt.hash(password, 10);
     userData.email = userData.email.toLowerCase();
-    userData.role = "users"
-    return await User.query().insert(userData).returning('*');
+    return await UserRepository.create(userData);
   }
 }
 
