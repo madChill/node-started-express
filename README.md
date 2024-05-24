@@ -9,7 +9,6 @@ node-started-express
 ```bash
 $ pnpm install
 ```
-
 ### Running the app
  
 ###  setup the postgres database and copy these url to:  .env file
@@ -52,12 +51,12 @@ The full folder structure of this app is explained below:
 | **src**                  | Contains your source code that will be compiled to the dist dir                               |
 | **src/config**           | Passport authentication strategies and constants variables, logging.. etc   |
 |                          | Add other complex config code here                                                            |
-| **src/controllers**      | Controllers define functions that respond to various http requests                            |
-| **src/middlewares**      | Login middleware, authorization checking                                                      |
-| **src/models**           | Models define Objection, Knex schemas that will be used in storing,retrieving data from postgres  |
-| **src/routers**          | Routing folder for all express application                                                    |
+| **src/modules/*.route**          | Routing files in each folders for all express application                             |
+| **src/modules/*.controllers**      | Controllers define functions that respond to various http requests                  |
+| **src/modules/*.service**      | contains main logic of all projects                                                     |
+| **src/modules/*.model**  | Models define Objection, Knex schemas that will be used in storing,retrieving data from postgres|
 | **src/utils**            | The basic common function used to be reused multiple times in app                             |
-| **src/validations**      | The validate files for http request, its written in joi library                               |
+| **src/combined.log**     | The logging files we can tracert the issues related to server side                            |
 | **migrations**           | Contains migrations .js files and history from Knex tool for postgres sql.                    |
 | **seeds**                | Contains seeds .js files prepare testing data after setup database intergration.              |
 | .env                     | API keys, tokens, passwords, database URI. Clone this, but don't check it in to public repos. |
@@ -74,7 +73,7 @@ The full folder structure of this app is explained below:
 #### Authentications
 We use the expressjs middware, passport, passport-jwt strategy  library to implement the authentication scenario.
 For more detail: After login with email, password we'll seen the users bearer token for include http request header later..
-Then for every http request need auth who created require we verify the bearer token with JWT custom scenario in JwtStrategy
+Then for every http request need auth who created require we verify the bearer token with JWT custom scenario in JwtStrategy.
 
 Middware to fillter users logined or not with jwt scenario
 
@@ -89,8 +88,7 @@ JWT custom scenario in JwtStrategy:
 ```javascript
 const jwt = async (payload, done) => {
   try {
-    const user = await User.query().findById(payload.sub)
-    if (user) return done(null, user);
+    if (payload.user) return done(null, user);
     return done(null, false);
   } catch (error) {
     return done(error, false);
@@ -99,7 +97,7 @@ const jwt = async (payload, done) => {
 ```
 #### Authorization
 After authentication we should get the user's roles, permission to verify that they can do action with the route.
-Its another middware after authentication filter
+Its another middware after authentication filter.
 
 Verify the model, action can excute or not
 
@@ -110,7 +108,6 @@ Verify the model, action can excute or not
         const { user } = req;
         const userRaw = await userController.getUserData(user)
         let isPermission = false
-        console.log(userRaw, obj, act);
         forEach(userRaw.permissions, item => {
           if(obj == item.object && act == item.action) isPermission = true;
         })
@@ -137,7 +134,17 @@ router.route('/items')
   .get(authorize(), authz.authzHasPermission('items', 'read'), controller.getItems);
 ```
 
+#### Ratelimit
+Use to limit repeated requests from specific IP.
 
+```javascript
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-7', 
+	legacyHeaders: false, 
+})
+```
 
 ## Support
 

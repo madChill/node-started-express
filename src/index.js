@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
+import { rateLimit } from 'express-rate-limit'
 const { Model } = require('objection');
 const { knex } = require('./config/database');
 const routes = require('./routes/v1');
@@ -21,6 +22,14 @@ Model.knex(knex);
  */
 const app = express();
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-7', 
+	legacyHeaders: false, 
+})
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());

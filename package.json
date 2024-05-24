@@ -42,6 +42,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-basic-auth": "^1.2.1",
+    "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
     "http-status": "^1.7.4",
     "joi": "^14.3.1",
@@ -56,7 +57,9 @@
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.5",
+    "pg-hstore": "^2.3.4",
     "pq": "^0.0.3",
+    "sequelize": "^6.37.3",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",
     "winston": "^3.13.0"
