@@ -12,9 +12,4 @@ module.exports = {
   // swaggerPassword: process.env.SWAGGER_PASSWORD,
   pgConnectionUri: process.env.PG_CONNECTION_URI,
   healthCheckPath: '/v1/users/status',
-  roles: {
-    admin: 'admin',
-    manager: 'managers',
-    users: 'users',
-  }
 };

@@ -1,27 +1,14 @@
 const express = require('express');
-const userRoutes = require('./user.route');
-const authRoutes = require('./auth.route');
-const managerRoutes = require('./manager.route');
+const UserModule = require('../../modules/users');
+const AuthModule = require('../../modules/auth');
+const ItemsModule = require('../../modules/items');
 
 const router = express.Router({ strict: false });
 router.get('/users/status', (req, res) => res.send('OK'));
 
-/**
- * GET v1/docs
- */
-// if (env !== 'production') {
-//   const useSchema = schema => (...args) => swaggerUi.setup(schema)(...args);
-
-//   router.use('/api-docs', basicAuth({
-//     users: {
-//       [swaggerUser]: swaggerPassword,
-//     },
-//     challenge: true,
-//   }), swaggerUi.serve, useSchema(swaggerDocument));
-// }
-router.use('/user', userRoutes);
-router.use('/auth', authRoutes);
-router.use('/manager', managerRoutes);
+router.use('/user', UserModule.router);
+router.use('/auth', AuthModule.router);
+router.use('/items', ItemsModule.router);
 
 router.use((req, res, next) => {
   next({
