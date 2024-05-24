@@ -12,7 +12,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(authBlockedUser(), controller.loggedIn)
+  .get(authorize(), controller.loggedIn)
 
 router
   .route('/password')

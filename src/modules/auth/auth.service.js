@@ -107,7 +107,7 @@ class AuthService {
   login = async ({ email, password }) => {
     try {
       let user = await this.userModule.services.getUserByEmail(email);
-
+      user = user.get({ plain: true });
       const invalidCredsErr = new APIError({
         message: 'Email and password combination does not match',
         errors: ['invalid_credentials'],

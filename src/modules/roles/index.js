@@ -1,12 +1,11 @@
-// const router = require('./items.route');
-// const controller = require('./auth.service');
-// const repository = require('./auth.repository');
-// const services = require('./items.service');
-// const models = require('./auth.model');
+const services = require('./roles.service');
+const models = require('./roles.model');
 
-module.exports = {
-    // controller,
-    // router,
-    // models,
-    // services
-};
+class RolesModule {
+    constructor() {
+        this.models = models;
+        this.services = services;
+    }
+}
+
+module.exports = new RolesModule() 

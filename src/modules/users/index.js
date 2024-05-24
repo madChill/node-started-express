@@ -1,5 +1,5 @@
 const router = require('./user.route');
-const controller = require('./user.service');
+const controller = require('./user.controller');
 const services = require('./user.service');
 const models = require('./user.model');
 

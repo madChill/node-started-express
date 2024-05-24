@@ -1,10 +1,9 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const { sequelize } = require('../../config/database');
 
-// Item Model
-class Item extends Model {}
+class Permission extends Model { }
 
-Item.init({
+Permission.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -13,18 +12,25 @@ Item.init({
   name: {
     type: DataTypes.STRING
   },
-  picture: {
+  slug: {
     type: DataTypes.STRING
   },
-  meta: {
-    type: DataTypes.JSONB
+  description: {
+    type: DataTypes.STRING
+  },
+  object: {
+    type: DataTypes.STRING
+  },
+  action: {
+    type: DataTypes.STRING
   }
+
 }, {
   sequelize,
-  modelName: 'items',
+  modelName: 'permission',
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
 
-module.exports = Item;
+module.exports = Permission;

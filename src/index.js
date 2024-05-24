@@ -12,6 +12,11 @@ const { knex } = require('./config/database');
 const routes = require('./routes/v1');
 const strategies = require('./modules/middlewares/passport.service');
 const error = require('./modules/middlewares/middware.error.service');
+const DatabaseService = require('./config/database');
+
+DatabaseService.sequelize.authenticate()
+.then(() => console.log('Database connected.'))
+.catch(err => console.error('Unable to connect to the database:', err));
 
 // Give the knex object to objection.
 Model.knex(knex);
