@@ -9,8 +9,8 @@ const passport = require('passport');
 const { Model } = require('objection');
 const { knex } = require('./config/database');
 const routes = require('./routes/v1');
-const strategies = require('./config/passport');
-const error = require('./middlewares/error');
+const strategies = require('./modules/middlewares/passport.service');
+const error = require('./modules/middlewares/middware.error.service');
 
 // Give the knex object to objection.
 Model.knex(knex);
@@ -42,7 +42,7 @@ app.use(cors());
 // enable authentication
 app.use(passport.initialize());
 passport.use('jwt', strategies.jwt);
-passport.use('client', strategies.client);
+// passport.use('client', strategies.client);
 
 // mount api v1 routes
 app.use('', routes);
