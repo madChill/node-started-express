@@ -1,5 +1,5 @@
 
-const APIError = require('../../utils/APIError');
+const APIError = require('../../utils/APIError.service');
 const ItemsRepository = require('./items.repository');
 
 class ItemsService {

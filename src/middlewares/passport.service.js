@@ -1,7 +1,7 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
-const { jwtPublicKey, jwtAlgorithm } = require('../../config/const');
-const logger = require('../../config/logger');
+const { jwtPublicKey, jwtAlgorithm } = require('../config/const');
+const logger = require('../config/logger');
 
 class PassportService {
   constructor() {
