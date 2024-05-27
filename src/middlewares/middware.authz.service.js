@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
-const APIError = require('../../utils/APIError');
-const userModule = require('../users');
-const { roles } = require('../../config/const');
+const APIError = require('../utils/APIError.service');
+const userModule = require('../modules/users');
+const { roles } = require('../config/const');
 const { forEach } = require('lodash');
 
 class MiddwareAuthService {

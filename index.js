@@ -1,12 +1,8 @@
+const http = require('http');
 const { port, env } = require('./src/config/const');
 const logger = require('./src/config/logger');
-const server = require('./src/index');
+const app = require('./src/app');
 
-// listen to requests
+const server = http.Server(app);
 server.listen(port, () => logger.info(`server started on port ${port} (${env})`));
-
-/**
- * Exports  express
- * @public
- */
 module.exports = server;

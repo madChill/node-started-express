@@ -7,7 +7,7 @@ const { omit } = require('lodash');
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
 
-const APIError = require('../../utils/APIError');
+const APIError = require('../../utils/APIError.service');
 const userModule = require('../../modules/users');
 const {
   jwtSecret,

@@ -1,5 +1,4 @@
 const express = require('express');
-const http = require('http');
 const bodyParser = require('body-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
@@ -10,8 +9,8 @@ import { rateLimit } from 'express-rate-limit'
 const { Model } = require('objection');
 const { knex } = require('./config/database');
 const routes = require('./routes/v1');
-const strategies = require('./modules/middlewares/passport.service');
-const error = require('./modules/middlewares/middware.error.service');
+const strategies = require('./middlewares/passport.service');
+const error = require('./middlewares/middware.error.service');
 const DatabaseService = require('./config/database');
 
 DatabaseService.sequelize.authenticate()
@@ -65,6 +64,4 @@ app.use(error.converter);
 // catch 404 and forward to error handler
 app.use(error.notFound);
 
-const server = http.Server(app);
-
-module.exports = server;
+module.exports = app;

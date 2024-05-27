@@ -1,8 +1,8 @@
 const httpStatus = require('http-status');
 const { isCelebrate } = require('celebrate');
 const { find } = require('lodash');
-const APIError = require('../../utils/APIError');
-const { env } = require('../../config/const');
+const APIError = require('../utils/APIError.service');
+const { env } = require('../config/const');
 
 class MiddwareErrorService {
   constructor() { }

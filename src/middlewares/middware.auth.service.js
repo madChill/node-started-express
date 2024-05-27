@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const passport = require('passport');
 const Promise = require('bluebird');
-const APIError = require('../../utils/APIError');
+const APIError = require('../utils/APIError.service');
 
 class MiddwareAuthService {
   constructor() {

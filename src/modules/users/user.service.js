@@ -4,7 +4,7 @@ const { get, map, forEach, pick } = require('lodash');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment-timezone');
 
-const APIError = require('../../utils/APIError');
+const APIError = require('../../utils/APIError.service');
 const Roles = require('../roles/roles.model');
 const Permission = require('../permissions/permissions.model');
 const UserRepository = require('./user.repository');
