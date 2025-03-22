@@ -2,42 +2,23 @@ const Items = require('./items.model');
 
 class ItemsRepository {
   async create(userData) {
-    try {
-      const user = await Items.create(userData);
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const user = await Items.create(userData);
+    return user;
   }
   findAndCountAll = async ({ offset, limit, order, where }) => {
-    try {
-      return Items.findAndCountAll({ offset, limit, order, where });
-    } catch (error) {
-      throw error;
-    }
+    return Items.findAndCountAll({ offset, limit, order, where });
   }
 
   findById = (id, options) => {
-    return User.findByPk(id, options);
+    return Items.findByPk(id, options);
   }
   async findByEmail(email) {
-    try {
-      const user = await Items.findOne({ where: { email } });
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const user = await Items.findOne({ where: { email } });
+    return user;
   }
   async update(id, userData) {
-    try {
-      const user = await Items.update(userData, { where: { id } });
-      if (!user) {
-        throw new Error('User not found');
-      }
-      return user;
-    } catch (error) {
-      throw error;
-    }
+    const user = await Items.update(userData, { where: { id } });
+    return user;
   }
 }
 

@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const httpStatus = require('http-status');
-const { get, map, forEach, pick } = require('lodash');
+const { get, forEach, pick } = require('lodash');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment-timezone');
 
@@ -8,7 +8,6 @@ const APIError = require('../../utils/APIError.service');
 const Roles = require('../roles/roles.model');
 const Permission = require('../permissions/permissions.model');
 const UserRepository = require('./user.repository');
-const { log } = require('winston');
 
 class UserService {
   getUserByEmail = async (email) => {
@@ -47,21 +46,16 @@ class UserService {
     }
   };
   updatePassword = async ({ password, currentPassword }, { user }) => {
-    try {
-      if (!await bcrypt.compare(currentPassword, user.password)) {
-        throw new APIError({
-          message: 'Password is incorrect',
-          errors: ['invalid_credentials'],
-          status: httpStatus.UNAUTHORIZED,
-          isPublic: true,
-        });
-      }
-
-      return await UserRepository.update(user.id, { password: await bcrypt.hash(password, 10) });
-
-    } catch (error) {
-      throw error;
+    if (!await bcrypt.compare(currentPassword, user.password)) {
+      throw new APIError({
+        message: 'Password is incorrect',
+        errors: ['invalid_credentials'],
+        status: httpStatus.UNAUTHORIZED,
+        isPublic: true,
+      });
     }
+    return await UserRepository.update(user.id, { password: await bcrypt.hash(password, 10) });
+
   };
   transform(user) {
     const userData = pick(user, ['id', 'uuid', 'email', 'firstName', 'lastName', 'role',

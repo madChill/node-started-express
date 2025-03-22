@@ -93,7 +93,7 @@ class MiddwareErrorService {
       message: 'Not found',
       status: httpStatus.NOT_FOUND,
     });
-    return handler(err, req, res);
+    return this.handler(err, req, res);
   };
 }
 

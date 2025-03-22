@@ -1,4 +1,4 @@
-const httpStatus = require('http-status');
+// const httpStatus = require('http-status');
 const UserServices = require('./user.service');
 class UsersController {
   constructor(){}
@@ -11,12 +11,8 @@ class UsersController {
     }
   };
   updatePassword = async (req, res, next) => {
-    try {
-      const res = UserServices.updatePassword(req.body);
-      return res.json(res);
-    } catch (error) {
-      throw error;
-    }
+    const response = UserServices.updatePassword(req.body);
+    return res.json(response);
   };
 }
 module.exports = new UsersController()

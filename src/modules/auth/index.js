@@ -1,9 +1,9 @@
 const router = require('./auth.route');
 // const controller = require('./auth.service');
 // const repository = require('./auth.repository');
-const services = require('./auth.service');
+// const services = require('./auth.service');
 // const models = require('./auth.model');
-const userModule = require('../../modules/users');
+// const userModule = require('../../modules/users');
 
 
 class AuthModule {

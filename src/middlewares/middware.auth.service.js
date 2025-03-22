@@ -98,7 +98,7 @@ class MiddwareAuthService {
 
   authBlockedUser = () => (req, res, next) => passport.authenticate(
     'jwt', { session: false },
-    handleJWTBlockedUser(req, res, next),
+    this.handleJWTBlockedUser(req, res, next),
   )(req, res, next);
 }
 

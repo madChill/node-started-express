@@ -11,7 +11,6 @@ const APIError = require('../../utils/APIError.service');
 const userModule = require('../../modules/users');
 const {
   jwtSecret,
-  jwtPublicKey,
   jwtAlgorithm,
   jwtExpirationInterval,
 } = require('../../config/const');
@@ -23,7 +22,7 @@ class AuthService {
   /**
  * Generate Access Token
  */
-  generateAccessToken = async (user, client = null, device = null) => {
+  generateAccessToken = async (user) => {
     if (!user) {
       throw new APIError({
         message: 'Unauthorized',
@@ -92,13 +91,9 @@ class AuthService {
  * @public
  */
   register = async (userInput) => { //req, res, next
-    try {
-      const user = await this.userModule.services.create(userInput)
-      const tokenResponse = await this.generateTokenResponse(user);
-      return tokenResponse;
-    } catch (error) {
-      throw error;
-    }
+    const user = await this.userModule.services.create(userInput)
+    const tokenResponse = await this.generateTokenResponse(user);
+    return tokenResponse;
   };
   /**
    * Returns jwt token if valid username and password is provided

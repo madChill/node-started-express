@@ -1,9 +1,9 @@
 const express = require('express');
 
 const controller = require('./user.controller');
-const { authorize, authBlockedUser } = require('../../middlewares/middware.auth.service');
+const { authorize } = require('../../middlewares/middware.auth.service'); // authBlockedUser
 const {
-  updateUser,
+  // updateUser,
   updatePassword,
 } = require('../validations/user.validation.service');
 const { validate } = require('../../middlewares/middware.validation.service');

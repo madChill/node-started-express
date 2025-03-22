@@ -122,54 +122,43 @@ exports.updateRole = async (req, res, next) => {
 };
 
 exports.addRole = async (req, res, next) => {
-  try {
-    const { body } = req;
-    body.slug = slug(req.body.name);
+  const { body } = req;
+  body.slug = slug(req.body.name);
+  let role = await Role
+    .query()
+    .insertGraph(body, Role.insertOptions)
+    .returning('*');
 
-    let role = await Role
-      .query()
-      .insertGraph(body, Role.insertOptions)
-      .returning('*');
-
-    if (role) {
-      role = await Role.query()
-        .eager('permissions')
-        .where('id', '=', role.id)
-        .first();
-    }
-    res.json(role);
-  } catch (error) {
-    throw error;
+  if (role) {
+    role = await Role.query()
+      .eager('permissions')
+      .where('id', '=', role.id)
+      .first();
   }
+  res.json(role);
 };
 
 exports.removeRole = async (req, res, next) => {
-  try {
-    // Pass empty array to unrelate Users, Permissions
-    const body = {
-      id: req.params.id,
-      permissions: [],
-      users: [],
-    };
-    const role = await Role
-      .query()
-      .upsertGraphAndFetch(body, Role.upsertOptions);
+  const body = {
+    id: req.params.id,
+    permissions: [],
+    users: [],
+  };
+  const role = await Role
+    .query()
+    .upsertGraphAndFetch(body, Role.upsertOptions);
 
-    if (role) {
-      await Role.query().deleteById(body.id);
-    }
-
-    if (!role) {
-      throw new APIError({
-        message: 'Role Not Found',
-        errors: ['role_not_found'],
-        status: httpStatus.BAD_REQUEST,
-        isPublic: true,
-      });
-    }
-
-    res.json({ success: true });
-  } catch (error) {
-    throw error;
+  if (role) {
+    await Role.query().deleteById(body.id);
   }
+
+  if (!role) {
+    throw new APIError({
+      message: 'Role Not Found',
+      errors: ['role_not_found'],
+      status: httpStatus.BAD_REQUEST,
+      isPublic: true,
+    });
+  }
+  res.json({ success: true });
 };

@@ -10,6 +10,7 @@ class UsersModule {
         this.models = models;
         this.services = services;
     }
+    
 }
 
 module.exports = new UsersModule() 

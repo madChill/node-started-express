@@ -31,11 +31,11 @@ class MiddwareAuthService {
       }
     };
   };
-  authzAdmin(obj, act) {
+  authzAdmin() {
     return async (req, res, next) => {
       try {
         const { user } = req;
-        const userRaw = await userController.getUserData(user)
+        const userRaw = await userModule.services.getUserData(user)
         if (!userRaw.role != roles.admin) {
           throw new APIError({
             message: 'Insufficient permissions',
