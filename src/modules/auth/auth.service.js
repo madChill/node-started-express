@@ -106,7 +106,7 @@ class AuthService {
       const invalidCredsErr = new APIError({
         message: 'Email and password combination does not match',
         errors: ['invalid_credentials'],
-        status: httpStatus.UNAUTHORIZED,
+        status: httpStatus.BAD_REQUEST,
         isPublic: true,
       });
       if (user && !await bcrypt.compare(password, user.password)) {

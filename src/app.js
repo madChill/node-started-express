@@ -5,6 +5,9 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../swagger_output.json')
+
 import { rateLimit } from 'express-rate-limit'
 const { Model } = require('objection');
 const { knex } = require('./config/database');
@@ -25,6 +28,8 @@ Model.knex(knex);
  * @public
  */
 const app = express();
+// Couple the application to the Swagger module.
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
@@ -51,6 +56,11 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+//app health check 
+app.get('/status', (req, res) => {
+	res.status(200).end();
+});
 
 // enable authentication
 app.use(passport.initialize());

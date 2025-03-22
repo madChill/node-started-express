@@ -4,12 +4,11 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-const { pgConnectionUri } = require('./src/config/const')
-console.log(pgConnectionUri,"=pgConnectionUri");
+const Env = require('./src/config/const')
 module.exports = {
   development: {
-    client: 'pg',
-    connection: pgConnectionUri,
+    client: 'mysql',
+    connection: Env.dbConnectionUri,
     pool: {
       min: 2,
       max: 10,
@@ -20,8 +19,8 @@ module.exports = {
   },
 
   production: {
-    client: 'pg',
-    connection: pgConnectionUri,
+    client: 'mysql',
+    connection: Env.dbConnectionUri,
     pool: {
       min: 2,
       max: 30

@@ -57,33 +57,10 @@ exports.seed = async function(knex) {
 
   await knex('roles').insert([
     {id: 1, name: 'admin', slug: 'admin', description: 'Administration role'},
-    {id: 2, name: 'Manage Bookings', slug: 'manage-bookings', description: 'Manager role'},
-    {id: 3, name: 'users', slug: 'users', description: 'Normal users'},
+    {id: 2, name: 'teacher', slug: 'manage', description: 'Teacher role'},
+    {id: 3, name: 'student', slug: 'users', description: 'student users'},
   ]);
 
-  await knex('permissions').insert([
-    {id: 1, name: 'Read Users', slug: 'r-users', description: 'roles action', object: 'users', action: 'read'},
-    {id: 2, name: 'Update Users', slug: 'u-users', description: 'roles action', object: 'users', action: 'update'},
-    {id: 3, name: 'Create Users', slug: 'c-users', description: 'roles action', object: 'users', action: 'create'},
-    {id: 4, name: 'Delate Users', slug: 'd-users', description: 'roles action', object: 'users', action: 'delete'},
-
-    {id: 5, name: 'Read Items', slug: 'r-items', description: 'roles action', object: 'items', action: 'read'},
-    {id: 6, name: 'Update Items', slug: 'u-items', description: 'roles action', object: 'items', action: 'update'},
-    {id: 7, name: 'Create Items', slug: 'c-items', description: 'roles action', object: 'items', action: 'create'},
-    {id: 8, name: 'Delate Items', slug: 'd-items', description: 'roles action', object: 'items', action: 'delete'},
-  ]);
-
-  await knex('role_permissions').insert([
-    {permission_id: 1, role_id: 1},
-    {permission_id: 2, role_id: 1},
-    {permission_id: 3, role_id: 1},
-    {permission_id: 4, role_id: 1},
-
-    {permission_id: 5, role_id: 2},
-    {permission_id: 6, role_id: 2},
-    {permission_id: 7, role_id: 2},
-    {permission_id: 8, role_id: 2},
-  ]);
   await knex('user_roles').insert([
     {role_id: 1, user_id: 1},
     {role_id: 2, user_id: 1},

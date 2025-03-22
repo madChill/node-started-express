@@ -14,15 +14,17 @@ exports.up = function(knex) {
             table.increments('id').primary()
             table
               .integer('item_id')
+              .unsigned()  // Add this to match the auto-increment field type
               .references('id')
               .inTable('items')
             table
               .integer('user_id')
+              .unsigned()  // Add this to match users id type
               .references('id')
               .inTable('users')
-            table
-              .jsonb('meta')
-          })
+            table.jsonb('meta')
+            table.timestamps(true, true)  // Add timestamps
+        })
       ])
 };
 

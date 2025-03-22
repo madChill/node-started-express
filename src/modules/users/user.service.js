@@ -54,6 +54,7 @@ class UserService {
         isPublic: true,
       });
     }
+
     return await UserRepository.update(user.id, { password: await bcrypt.hash(password, 10) });
 
   };

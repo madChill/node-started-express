@@ -1,14 +1,31 @@
-require('dotenv').config();
+const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
 
 class Env {
   instance = null;
   constructor() {
-    // Check if instance already exists
+    const baseEnvPath = path.resolve(process.cwd(), '.env');
+    if (fs.existsSync(baseEnvPath)) {
+      dotenv.config({ path: baseEnvPath });
+      console.log(`Loaded base environment from ${baseEnvPath}`);
+    }
+    // Determine environment
+    const NODE_ENV = process.env.NODE_ENV || 'development';
+    // Load environment-specific file (overrides base settings)
+    const envPath = path.resolve(process.cwd(), `.env.${NODE_ENV}`);
+    if (fs.existsSync(envPath)) {
+      dotenv.config({ path: envPath });
+      console.log(`Loaded ${NODE_ENV} environment from ${envPath}`);
+    } else {
+      console.warn(`Environment file ${envPath} not found, using defaults`);
+    }
     if (Env.instance) {
       return Env.instance;
     }
     this.env = process.env.NODE_ENV || 'development'
     this.port = process.env.PORT || 3000
+    this.jwtPublicKey = process.env.JWT_PUBLIC_KEY
     this.jwtSecret = process.env.JWT_SECRET
     this.jwtAccessExpirationMinutes = process.env.JWT_ACCESS_EXPIRATION_MINUTES
     this.jwtRefreshExpirationDays = process.env.JWT_REFRESH_EXPIRATION_DAYS
@@ -17,9 +34,9 @@ class Env {
     this.jwtAlgorithm = 'RS256'
     this.jwtExpirationInterval = 2000
     this.rtExpirationInterval = 90
-    this.pgConnectionUri = process.env.PG_CONNECTION_URI
+    this.dbConnectionUri = process.env.DB_CONNECTION_URI
     // Store instance
-    // Env.instance = this;
+    Env.instance = this;
   }
 
   static getInstance() {

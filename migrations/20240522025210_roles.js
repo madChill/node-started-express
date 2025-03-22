@@ -15,10 +15,12 @@ exports.up = function(knex) {
             table.increments('id').primary()
             table
               .integer('role_id')
+              .unsigned() 
               .references('id')
               .inTable('roles') 
             table
               .integer('user_id')
+              .unsigned()
               .references('id')
               .inTable('users')
             table

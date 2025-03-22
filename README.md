@@ -69,6 +69,7 @@ The full folder structure of this app is explained below:
 
 
 ## Security 
+#### Validation
 
 #### Authentications
 We use the expressjs middware, passport, passport-jwt strategy  library to implement the authentication scenario.
@@ -144,6 +145,30 @@ const limiter = rateLimit({
 	standardHeaders: 'draft-7', 
 	legacyHeaders: false, 
 })
+```
+
+## Api docs
+#### Swagger integration
+before add a new file route in a new module make sure includes that's file in swagger.js file, option name is 'endpointsFiles'. 
+Then rerun the command, this will automatically get the changes from the route file, includes the swagger api docs.
+``` command
+  yarn swagger-autogen
+```
+So, now access to path /doc to double check your api is released.
+
+
+## Migration
+#### Create a new file migration database
+``` command
+yarn knex:make [--file-name]
+```
+#### Run the migration
+``` command
+yarn knex:migrate
+```
+#### Rollback 
+``` command
+yarn knex:rollback
 ```
 
 ## Support

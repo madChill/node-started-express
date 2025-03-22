@@ -27,16 +27,16 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=node_app
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root@12
+      - MYSQL_DATABASE=school_app
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin12#$
     ports:
       - '3306:3306'
     volumes:
-      - mysql-data:/var/lib/mysql
-      # Optional: mount custom MySQL configuration
-      # - ./mysql-config:/etc/mysql/conf.d
+      - './docker/db/data:/var/lib/mysql'
+      - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
+      - './docker/db/sql:/docker-entrypoint-initdb.d'
     networks:
       - node-network
     command: --default-authentication-plugin=mysql_native_password
@@ -48,7 +48,7 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root@12
     ports:
       - '8080:80'
     networks:

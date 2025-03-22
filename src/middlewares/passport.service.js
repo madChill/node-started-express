@@ -1,8 +1,9 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
-const { jwtPublicKey, jwtAlgorithm } = require('../config/const');
+const Env = require('../config/const');
 const logger = require('../config/logger');
 
+const { jwtPublicKey, jwtAlgorithm } = Env;
 class PassportService {
   constructor() {
     this.secret = Buffer.from(jwtPublicKey, 'hex')
