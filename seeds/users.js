@@ -4,6 +4,11 @@
  */
 exports.seed = async function(knex) {
   // Deletes ALL existing entries
+  // check the user existed records 
+  const users = await knex('users').select('*');
+  if (users.length > 0) {
+    return;
+  }
   await knex('users').insert([
     {
       "email":"admin@gmail.com",

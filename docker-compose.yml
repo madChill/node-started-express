@@ -20,11 +20,13 @@ services:
     depends_on:
       - mysql
     volumes:
+      - ./:/usr/src/node-app
       - ./src:/app/src
       - ./.env:/app/.env
     networks:
       - node-network
-    command: npm run start:dev
+    # command: sh -c "npx knex:migrate %% npx knex:seed && npm run start:dev"
+    command: sh -c "sh /app/scripts/init.sh"
     restart: unless-stopped
 
   mysql:

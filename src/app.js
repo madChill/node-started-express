@@ -6,7 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('../swagger_output.json')
+const swaggerFile = require('./swagger_output.json')
 
 import { rateLimit } from 'express-rate-limit'
 const { Model } = require('objection');
