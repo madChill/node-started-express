@@ -32,7 +32,10 @@ class Env {
     this.jwtAlgorithm = 'RS256'
     this.jwtExpirationInterval = 2000
     this.rtExpirationInterval = 90
-    this.dbConnectionUri = process.env.DB_CONNECTION_URI
+    this.dbHost = process.env.DB_HOST
+    this.dbName = process.env.DB_NAME
+    this.dbUser = process.env.DB_USER
+    this.dbPass = process.env.DB_PASS
     this.permission = {
       user: {
         create: 'user:create',

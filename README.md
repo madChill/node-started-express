@@ -11,8 +11,10 @@ node-started-express
 #### setup .env file(the aes couple key)
 JWT_SECRET= ""
 JWT_PUBLIC_KEY = ""
-DB_CONNECTION_URI=mysql://admin:admin12%23%24@localhost:3306/school_app
-
+DB_HOST=mysql
+DB_NAME=school_app
+DB_USER=admin
+DB_PASS=admin12#$
 #### 1. setup mysql databas with docker-compose 
  ```bash
  docker-compose up --build
