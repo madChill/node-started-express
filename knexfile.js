@@ -7,7 +7,7 @@
 const Env = require('./src/config/const')
 module.exports = {
   development: {
-    client: 'mysql',
+    client: 'mysql2',
     connection: {
       host: Env.dbHost,
       database: Env.dbName,
