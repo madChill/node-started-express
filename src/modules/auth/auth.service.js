@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
 
 const APIError = require('../../utils/APIError.service');
-const userModule = require('../../modules/users');
+const UserService = require('../../modules/users/user.service');
 const {
   jwtSecret,
   jwtAlgorithm,
@@ -16,9 +16,7 @@ const {
 } = require('../../config/const');
 
 class AuthService {
-  constructor({ userModule }) {
-    this.userModule = userModule
-  }
+  constructor() {}
   /**
  * Generate Access Token
  */
@@ -75,7 +73,7 @@ class AuthService {
   generateTokenResponse = async (user, client = null, device = null) => {
     const accessToken = await this.generateAccessToken(user, client, device);
     const refreshToken = await this.generateRefreshToken(user);
-    const updatedUser = userModule.services.transform(user);
+    const updatedUser = UserService.transform(user);
     return {
       token: {
         tokenType: 'Bearer',
@@ -101,7 +99,7 @@ class AuthService {
    */
   login = async ({ email, password }) => {
     try {
-      let user = await this.userModule.services.getUserByEmail(email);
+      let user = await UserService.getUserByEmail(email);
       user = user.get({ plain: true });
       const invalidCredsErr = new APIError({
         message: 'Email and password combination does not match',
@@ -132,7 +130,7 @@ class AuthService {
     }
   };
 }
-module.exports = new AuthService({ userModule })
+module.exports = new AuthService()
 
 
 

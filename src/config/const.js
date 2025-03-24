@@ -18,13 +18,11 @@ class Env {
       dotenv.config({ path: envPath });
       console.log(`Loaded ${NODE_ENV} environment from ${envPath}`);
     } else {
-      console.warn(`Environment file ${envPath} not found, using defaults`);
+      console.log(`Environment file ${envPath} not found, using defaults`);
     }
     if (Env.instance) {
       return Env.instance;
     }
-    this.env = process.env.NODE_ENV || 'development'
-    this.port = process.env.PORT || 3000
     this.jwtPublicKey = process.env.JWT_PUBLIC_KEY
     this.jwtSecret = process.env.JWT_SECRET
     this.jwtAccessExpirationMinutes = process.env.JWT_ACCESS_EXPIRATION_MINUTES
@@ -35,6 +33,14 @@ class Env {
     this.jwtExpirationInterval = 2000
     this.rtExpirationInterval = 90
     this.dbConnectionUri = process.env.DB_CONNECTION_URI
+    this.permission = {
+      user: {
+        create: 'user:create',
+        read: 'user:read',
+        update: 'user:update',
+        delete: 'user:delete'
+      },
+    }
     // Store instance
     Env.instance = this;
   }

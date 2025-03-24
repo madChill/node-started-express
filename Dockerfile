@@ -1,8 +1,9 @@
-FROM public.ecr.aws/v2t1l8t3/node:14-alpine
+FROM node:20-alpine
 RUN mkdir /app
 WORKDIR /app
 ADD package.json /app
 ADD . /app
-RUN npm install
-EXPOSE 5000 4000
-CMD ["npm", "run", "dev"]
+RUN npm install -g pnpm
+RUN npx pnpm install
+EXPOSE 3000
+CMD ["npm", "run", "start:dev"]

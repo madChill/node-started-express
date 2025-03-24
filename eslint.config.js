@@ -10,6 +10,7 @@ module.exports = [
         ignores: [
             '**/node_modules/**',
             '**/dist/**',
+            // '**/tests/**',
             '**/build/**',
             '**/coverage/**',
             '**/.git/**',
@@ -52,6 +53,29 @@ module.exports = [
 
             // Include any other rules from airbnb-base you want to keep
             ...airbnbBase.rules,
+        },
+    },
+    {
+        files: ['**/tests/**/*.js', '**/*.test.js', '**/*.spec.js'],
+        languageOptions: {
+            globals: {
+                ...globals.jest,
+                describe: 'readonly',
+                it: 'readonly',
+                test: 'readonly',
+                expect: 'readonly',
+                beforeEach: 'readonly',
+                afterEach: 'readonly',
+                beforeAll: 'readonly',
+                afterAll: 'readonly',
+                jest: 'readonly',
+            },
+        },
+        rules: {
+            'no-undef': 'off',
+            'import/no-extraneous-dependencies': 'off',
+            'max-len': 'off',
+            'global-require': 'off',
         },
     },
 ];

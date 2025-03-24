@@ -1,28 +1,31 @@
 version: '3'
 
 services:
-  # node-app:
-  #   build: .
-  #   image: node-app
-  #   environment:
-  #     - NODE_ENV=development
-  #     - PORT=3000
-  #     - DB_HOST=mysql
-  #     - DB_USER=root
-  #     - DB_PASSWORD=password
-  #     - DB_NAME=node_app
-  #     - DB_PORT=3306
-  #   ports:
-  #     - '3000:3000'
-  #   depends_on:
-  #     - mysql
-  #   volumes:
-  #     - .:/usr/src/node-app
-  #     - /usr/src/node-app/node_modules
-  #   networks:
-  #     - node-network
-  #   command: npm run dev
-  #   restart: unless-stopped
+  school_app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: school_app
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=mysql
+      - DB_USER=admin
+      - DB_PASSWORD=admin12#$
+      - DB_NAME=school_app
+      - DB_PORT=3306
+      - DB_CONNECTION_URI=mysql://admin:admin12%23%24@mysql:3306/school_app
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mysql
+    volumes:
+      - ./src:/app/src
+      - ./.env:/app/.env
+    networks:
+      - node-network
+    command: npm run start:dev
+    restart: unless-stopped
 
   mysql:
     image: mysql:8.0
@@ -33,10 +36,10 @@ services:
       - MYSQL_PASSWORD=admin12#$
     ports:
       - '3306:3306'
-    volumes:
-      - './docker/db/data:/var/lib/mysql'
-      - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
-      - './docker/db/sql:/docker-entrypoint-initdb.d'
+    # volumes:
+      # - './docker/db/data:/var/lib/mysql'
+      # - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
+      # - './docker/db/sql:/docker-entrypoint-initdb.d'
     networks:
       - node-network
     command: --default-authentication-plugin=mysql_native_password

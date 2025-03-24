@@ -68,7 +68,7 @@ passport.use('jwt', strategies.jwt);
 // passport.use('client', strategies.client);
 
 // mount api v1 routes
-app.use('', routes);
+app.use('/api', routes);
 // if error is not an instanceOf APIError, convert it.
 app.use(error.converter);
 // catch 404 and forward to error handler

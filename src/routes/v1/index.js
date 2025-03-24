@@ -1,14 +1,13 @@
 const express = require('express');
 const UserModule = require('../../modules/users');
 const AuthModule = require('../../modules/auth');
-const ItemsModule = require('../../modules/items');
 
+const userModule = new UserModule();
 const router = express.Router({ strict: false });
 router.get('/users/status', (req, res) => res.send('OK'));
 
-router.use('/user', UserModule.router);
+router.use('/', userModule.router);
 router.use('/auth', AuthModule.router);
-router.use('/items', ItemsModule.router);
 
 router.use((req, res, next) => {
   next({

@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require('sequelize'); // Sequelize
 const { sequelize } = require('../../config/database');
 const Role = require('../roles/roles.model');
+const Registration = require('../registrations/registrations.model');
 const UserRole = require('../usersRoles/usersRoles.model');
 class User extends Model { }
 User.init({
@@ -47,6 +48,17 @@ User.belongsToMany(Role, {
 });
 Role.belongsToMany(User, {
   through: UserRole,
+});
+
+
+// A user can be a teacher in many registrations
+User.hasMany(Registration, {
+  foreignKey: 'teacher_id',
+  as: 'teacher_registrations'
+});
+Registration.belongsTo(User, {
+  through: 'student_id',
+  as: 'student'
 });
 
 module.exports = User;
