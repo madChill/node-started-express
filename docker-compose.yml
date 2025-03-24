@@ -1,33 +1,33 @@
 version: '3'
 
 services:
-  school_app:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    image: school_app
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DB_HOST=mysql
-      - DB_USER=admin
-      - DB_PASSWORD=admin12#$
-      - DB_NAME=school_app
-      - DB_PORT=3306
-      - DB_CONNECTION_URI=mysql://admin:admin12%23%24@mysql:3306/school_app
-    ports:
-      - '3000:3000'
-    depends_on:
-      - mysql
-    volumes:
-      - ./:/usr/src/node-app
-      - ./src:/app/src
-      - ./.env:/app/.env
-    networks:
-      - node-network
-    # command: sh -c "npx knex:migrate %% npx knex:seed && npm run start:dev"
-    command: sh -c "sh /app/scripts/init.sh"
-    restart: unless-stopped
+  # school_app:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   image: school_app
+  #   environment:
+  #     - NODE_ENV=development
+  #     - PORT=3000
+  #     - DB_HOST=mysql
+  #     - DB_USER=admin
+  #     - DB_PASSWORD=admin12#$
+  #     - DB_NAME=school_app
+  #     - DB_PORT=3306
+  #     - DB_CONNECTION_URI=mysql://admin:admin12%23%24@mysql:3306/school_app
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - mysql
+  #   volumes:
+  #     - ./:/usr/src/node-app
+  #     - ./src:/app/src
+  #     - ./.env:/app/.env
+  #   networks:
+  #     - node-network
+  #   # command: sh -c "npx knex:migrate %% npx knex:seed && npm run start:dev"
+  #   command: sh -c "sh /app/scripts/init.sh"
+  #   restart: unless-stopped
 
   mysql:
     image: mysql:8.0
