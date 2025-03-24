@@ -4,11 +4,6 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-this.dbHost = process.env.DB_HOST
-    this.dbName = process.env.DB_NAME
-    this.dbUser = process.env.DB_USER
-    this.dbPass = process.env.DB_PASS
-
 const Env = require('./src/config/const')
 module.exports = {
   development: {

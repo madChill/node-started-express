@@ -8,7 +8,7 @@ const passport = require('passport');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 
-import { rateLimit } from 'express-rate-limit'
+const rateLimit = require('express-rate-limit');
 const { Model } = require('objection');
 const { knex } = require('./config/database');
 const routes = require('./routes/v1');
