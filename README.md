@@ -43,7 +43,7 @@ $ pnpm run start:dev
 #### test the health check 
 Endpoint: GET http://localhost:3000/status
 #### enpoint swaggeer
-Endpoint: GET http://localhost:3000/docs
+Endpoint: GET http://localhost:3000/doc
 #### endpoint for login make sure you've logged in to get bearer user token for every single api call
 bellow is a test user
 ```bash
